@@ -1,0 +1,2 @@
+感觉啥都错了只有ifconfig有个ip其他啥都没有，ping网站出来个unknown。设置网络连接nat就好了
+
