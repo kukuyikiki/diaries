@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var urls = [
+  "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2F1114%2F0G020114924%2F200G0114924-15-1200.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1655473523&t=a385c025e144fc13a9530d8e336314ad",
+  "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2F1113%2F052420110515%2F200524110515-11-1200.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1655473523&t=4080dd6f69eeea318eef52d243c511ab",
+  "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2F1114%2F113020142315%2F201130142315-1-1200.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1655473523&t=596b245e3ce53d491fc74b66dee93d4c",
+  "https://111gimg2.baidu.com/image_search/src=http%3A%2F%2Fimsafsdg.jj20.com%2Fup%2Fallimg%2F4k%2Fs%2F02%2F2109242306111155-0-lp.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1655473523&t=8891fdfd238970779919f16a76f35082",
+  "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2Ftp09%2F210F2130512J47-0-lp.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1655473523&t=8327687b09b74660165a9295499e7706",
+  "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2Ftp09%2F21031FKU44S6-0-lp.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1655473523&t=b4132004d5ebed545e4697b0f7033c5b",
+  "https://111gimg2.baidu.com/image_search/src=http%3A%2F%2Fiasfdasdmg.jj20.com%2Fup%2Fallimg%2F4k%2Fs%2F01%2F210924111121L18-0-lp.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1655473523&t=7d701e44700e27df26c9a00efa1368b9",
+  "http://t14.baidu.com/it/u=1682967921,618817946&fm=224&app=112&f=JPEG?w=500&h=500",
+];
+function loadImg(url, index) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = function() {
+      console.log("一张图片加载完成:", index);
+      resolve(img);
+    };
+    img.onerror = function() {
+    	reject(new Error('Could not load image at' + url));
+    };
+    img.src = url;
+  });
+}
+function limitLoad(urls, handler, limit) {
+  let sequence = [].concat(urls); // 复制urls
+  // 这一步是为了初始化 promises 这个"容器"
+  let promises = sequence.splice(0, limit).map((url, index) => {
+    return handler(url, index).then((img) => {
+      console.log('加载完成：', img, index)
+      // 返回下标是为了知道数组中是哪一项最先完成
+      return index;
+    });
+  });
+
+  console.log(promises, '刚开始')
+  // 注意这里要将整个变量过程返回，这样得到的就是一个Promise，可以在外面链式调用
+  return sequence.reduce((pCollect, url) => {
+      return pCollect
+        .then(() => {
+          return Promise.race(promises); // 返回已经完成的下标
+        })
+        .then(fastestIndex => { // 获取到已经完成的下标
+          console.log(fastestIndex, '已经完成的下标')
+          console.log('要替换的url：', url)
+        	// 将"容器"内已经完成的那一项替换
+          promises[fastestIndex] = handler(url, fastestIndex).then(
+            () => {
+              return fastestIndex; // 要继续将这个下标返回，以便下一次变量
+            }
+          );
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }, Promise.resolve()) // 初始化传入
+    // .then(() => { // 最后三个用.all来调用
+    //   console.log(promises, '最后？')
+    //   return Promise.all(promises);
+    // });
+}
+limitLoad(urls, loadImg, 3)
+  .then(res => {
+    console.log("图片全部加载完毕");
+    console.log(res);
+  })
+  .catch(err => {
+    console.error(err);
+  });
+
+  // 正式版
+//   function loadImg(url) {
+//   return new Promise((resolve, reject) => {
+//     let image = new Image()
+//     image.onload = function() {
+//       resolve()
+//     }
+//     image.onerror = function() {
+//       reject(new Error('Could not load image at' + url));
+//     }
+//     image.src = url
+//   })
+// }
+
+// function limit(urls, limit, cb) {
+//   let sequence = [].concat(urls)
+//   let promises = sequence.splice(0, limit).map((url, index) => {
+//     return cb(url).then(() => {
+//       return index
+//     })
+//   })
+
+//   return sequence.filter((res, url) => {
+//     return res
+//       .then(() => {
+//         return Promise.race(promises)
+//       })
+//       .then((fastIndex) => {
+//         promises[fastIndex] = zb(url).then(() => {
+//           return fastIndex
+//         })
+//       })
+//       .catch(err => {
+//         console.error(err)
+//       })
+//   }, Promise.resolve())
+// } 
+  </script>
+</body>
+</html>

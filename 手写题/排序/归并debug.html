@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <script>
+    // // // 归并
+    // function sort(array) {
+    //   mergeSort(array, 0, array.length - 1)
+    //   return array
+    // }
+    // function mergeSort(array, left, right) {
+    //   // 左右索引相同说明已经只有一个数了
+    //   if (left === right) return
+    //   // 等同于 `left + (right - left) / 2`
+    //   // 相比 `(left + right) / 2` 来说更加安全，不会溢出
+    //   // 使用位运算是因为位运算比四则运算快
+    //   let mid = parseInt(left + ((right - left) >> 1))
+    //   mergeSort(array, left, mid)
+    //   mergeSort(array, mid + 1, right)
+    //   console.log(`${left}left+${mid}mid+${right}right`)
+    //   let help = []
+    //   let i = 0
+    //   let p1 = left
+    //   let p2 = mid + 1
+    //   while (p1 <= mid && p2 <= right) {
+    //     help[i++] = array[p1] < array[p2] ? array[p1++] : array[p2++]
+    //     console.log(help[i-1] + '_1i')
+    //   }
+    //   while (p1 <= mid) {
+    //     help[i++] = array[p1++]
+    //     console.log(help[i-1] + '_2i')
+    //   }
+    //   while (p2 < right) {
+    //     help[i++] = array[p2++]
+    //     console.log(help[i-1] + '_3i')
+    //   }
+
+    //   for (let i = 0; i < help.length; i++) {
+    //     array[left + i] = help[i]
+    //     console.log(help[i] + '_4i')
+    //   }
+    //   return array
+    // }
+
+    // let arr = [3, 38, 5, 47, 36, 26]
+    // sort(arr)
+
+    function checkArray(array) {
+      return Array.isArray(array)
+    }
+    function swap(array, left, right) {
+        let rightValue = array[right]
+        array[right] = array[left]
+        array[left] = rightValue
+    }
+
+    // 快排
+    function sort(array) {
+      quickSort(array, 0, array.length - 1);
+      return array;
+    }
+
+    function quickSort(array, left, right) {
+      if (left < right) {
+        // 随机取值，然后和末尾交换，这样做比固定取一个位置的复杂度略低
+        let indexs = part(array, left, right);
+        quickSort(array, left, indexs[0]);
+        quickSort(array, indexs[1] + 1, right);
+      }
+    }
+    function part(array, left, right) {
+      let less = left - 1;
+      let more = right;
+      while (left < more) {
+        if (array[left] < array[right]) {
+          // 当前值比基准值小，`less` 和 `left` 都加一
+          ++less;
+          ++left;
+        } else if (array[left] > array[right]) {
+          // 当前值比基准值大，将当前值和右边的值交换
+          // 并且不改变 `left`，因为当前换过来的值还没有判断过大小
+          swap(array, --more, left);
+        } else {
+          // 和基准值相同，只移动下标
+          left++;
+        }
+      }
+      // 将基准值和比基准值大的第一个值交换位置
+      // 这样数组就变成 `[比基准值小, 基准值, 比基准值大]`
+      swap(array, right, more);
+      return [less, more];
+    }
+    let arr = [2, 8, 7, 9, 6, 3, 5]
+    sort(arr)
+    console.log(arr);
+  </script>
+</body>
+</html>

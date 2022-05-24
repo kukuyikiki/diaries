@@ -1,0 +1,69 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .my-input {
+      animation: my-move 2s ease;
+    }
+    @keyframes my-move{
+      /* 0% { }
+      25% { } */
+      from {}
+      to {}
+    }
+  </style>
+</head>
+<body>
+  <input id="my-input" type="text">
+  
+  <script>
+    var myInput = document.getElementById('my-input')
+    
+    function debounce(delay) {
+      let timer
+      return function(value) {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+          console.log(value)
+          console.log(this, 'this')
+        }, delay)
+      }
+    }
+
+    var debouncFunc = debounce(1000)
+    myInput.addEventListener('keyup', function(e){
+      debouncFunc(e.target.value)
+      console.log(this)
+    })
+  </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .container{
+        display: flex;
+    }
+    .container > div {
+        width: 100px;
+    }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div style="height: 100px;background-color: red;"></div>
+    <div style="min-height: 10px;background-color: gray;"></div>
+</div>
+
+</body>
+</html>

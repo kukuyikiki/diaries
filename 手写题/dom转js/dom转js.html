@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  
+  <script>  
+    function helper(node, res, deep){
+      if(node.nodeType === 1){
+          // nodeType 属性返回节点类型。
+          // 如果节点是一个元素节点，nodeType 属性返回 1。
+          // 如果节点是属性节点, nodeType 属性返回 2。
+          // 如果节点是一个文本节点，nodeType 属性返回 3。
+          // 如果节点是一个注释节点，nodeType 属性返回 8。
+          // 该属性是只读的。
+          deep++;
+          let tmp = {}
+          tmp['tagName'] = node.tagName
+          res.push(tmp)
+          maxChildren = Math.max(res.length, maxChildren)
+          maxDepth = Math.max(deep, maxDepth)
+          if(node.childNodes){
+              tmp['children'] = []
+              for (let i = 0; i < node.childNodes.length; i++){
+                  helper(node.childNodes[i], tmp['children'], deep)
+              }
+          }
+      }
+    }
+
+    let root = document.getElementsByTagName('html')[0]
+    let res = []
+    let nodeCounts = document.getElementsByTagName('*').length
+    let maxDepth = 0
+    let maxChildren = 0
+    
+    helper(root, res, 0)
+    
+    console.log(res, 'res')
+    console.log(nodeCounts); // 7
+    console.log(maxChildren); // 3
+    console.log(maxDepth); // 4
+  </script>
+</body>
+</html>

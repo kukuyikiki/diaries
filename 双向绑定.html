@@ -1,0 +1,105 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>双向绑定</title>
+</head>
+<body>
+  <input type="text" name="" id="myInput">
+  <script>
+    let myInput = document.getElementById('myInput')
+    let obj = {
+      name: '张三'
+    }
+
+    // 观察对象
+    function obersever(obj) {
+      if (typeof obj !== 'object') {
+        return false
+      }
+
+      for (let item in obj) {
+        // 为每一个属性设置 getter setter
+        defineReactive(obj, item, obj[item])
+        obersever(obj[item])
+      }
+    }
+
+    // 使用defineProperty
+    function defineReactive(target, prop, value) {
+      Object.defineProperty(target, prop, {
+        get() {
+          myInput.value = value
+          console.log('获取->', value)
+          return value
+        },
+        set(newValue) {
+          myInput.value = newValue
+          console.log('设置',newValue)
+
+        }
+      })
+    }
+
+    
+    obersever(obj)
+
+    myInput.addEventListener('input', function() {
+      obj.name = this.value
+    })
+  </script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>双向绑定</title>
+</head>
+<body>
+  <input type="text" id="myInput">
+
+  <script>
+    let myInput = document.getElementById('myInput')
+    let inputObj = {
+      name: '李四'
+    }
+
+    function observer(obj) {
+      if (typeof obj !== 'object') {
+        return
+      }
+
+      for(let item in obj) {
+        defineRes(obj, item, obj[item])
+        observer(obj[item])
+      }
+    }
+
+    function defineRes(obj, item, value) {
+      Object.defineProperty(obj, item, {
+        get: function() {
+          myInput.value = value
+          return value
+        },
+        set: function(newValue) {
+          myInput.value = newValue
+        }
+      })
+    }
+
+    observer(inputObj)
+    myInput.addEventListener('input', function() {
+      inputObj.name = this.value
+    })
+
+  </script>
+</body>
+</html>
+
