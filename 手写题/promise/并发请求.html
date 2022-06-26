@@ -78,7 +78,7 @@ limitLoad(urls, loadImg, 3)
     console.error(err);
   });
 
-  // 正式版
+// 正式版
 //   function loadImg(url) {
 //   return new Promise((resolve, reject) => {
 //     let image = new Image()
@@ -100,13 +100,13 @@ limitLoad(urls, loadImg, 3)
 //     })
 //   })
 
-//   return sequence.filter((res, url) => {
+//   return sequence.reduce((res, url) => {
 //     return res
 //       .then(() => {
 //         return Promise.race(promises)
 //       })
 //       .then((fastIndex) => {
-//         promises[fastIndex] = zb(url).then(() => {
+//         promises[fastIndex] = cb(url).then(() => {
 //           return fastIndex
 //         })
 //       })
@@ -114,7 +114,7 @@ limitLoad(urls, loadImg, 3)
 //         console.error(err)
 //       })
 //   }, Promise.resolve())
-// } 
+// }
   </script>
 </body>
 </html>

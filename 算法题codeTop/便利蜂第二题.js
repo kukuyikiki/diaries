@@ -57,6 +57,7 @@ function getMax(n, y, arr) {
       }
     }
   }
+  console.log(dp, 'dp')
   return res
 }
 getMax(4, 30, [18, 20, 22, 21])

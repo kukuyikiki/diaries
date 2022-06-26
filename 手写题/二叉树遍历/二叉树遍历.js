@@ -113,55 +113,17 @@ function behindOrder(root) {
 
 // 层序遍历
 function levelOrder(root) {
-  let deque = []
-  deque.push(root)
-  while (deque.length) {
-    front = deque.shift()
-    if (front.hasOwnProperty('left')) {
-      deque.push(front.left)
-      deque.push(front.right)
-    }
-    (front.val === null) ? console.log('') : console.log(front.value)
-  }
-}
-
-function levelOrder(root) {
-  let deque = []
-  deque.push(root)
-  while (deque.length) {
-    let front = deque.shift()
-    if (front.hasOwnProperty('left')) {
-      deque.push(front.left)
-      deque.push(front.right)
-    }
-    console.log(front.val)
-  }
-}
-
-// 二叉树层序遍历
-function orderLevel(root) {
-  const tempArr = []
+  if (!root) return
   const ans = []
-
-  if (root === null) {
-    return []
-  } else {
-    tempArr.push(root)
-  }
-  while(tempArr){
-    let len = tempArr.length
-    let res = []
-    for(let i = 0; i < len; i++) {
-      const temp = tempArr.shift()
-      res.push(temp.val)
-      if (temp.left) {
-        tempArr.push(temp.left)
-      }
-      if (temp.right) {
-        tempArr.push(temp.right)
-      }
-    }
-    ans.push(res)
-  }
+  order(root, 0, ans)
   return ans
+}
+
+function order(node, count, ans) {
+  if (node) {
+    ans[count] = ans[count] ?? []
+    ans[count].push(node.val)
+  }
+  order(node.left, count + 1, ans)
+  order(node.right, count + 1, ans)
 }

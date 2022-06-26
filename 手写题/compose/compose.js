@@ -56,3 +56,64 @@ function compose(...args) {
     }, Promise.resolve(init.apply(null, arg)))
   }
 }
+
+
+class Observe {
+  constructor(value) {
+    // dep实例
+    if (Array.isArray(value)) {
+      // Object.setPrototypeOf(value, )
+      this.observeArray(value)
+    } else {
+      this.walk(value)
+    }
+  }
+
+  walk(value) {
+    for (let key in value) {
+      defineReactive(value, key)
+    }
+  }
+
+  observeArray(value) {
+    for (let i = 0, len = value.length; i < len; i++) {
+      observe(arr[i])
+    }
+  }
+}
+
+function observe(value) {
+  if (typeof value !== 'object') {
+    return
+  }
+  var ob = new Observe(value)
+  return ob
+}
+
+function defineReactive(data, key, value) {
+  if (arguments.length === 2) {
+    value = data[key]
+  }
+  let childOb = observe(value)
+
+  Object.defineProperty(data, key, {
+    enumerable: true,
+    configurable: true,
+    get() {
+      console.log()
+      if (Dep.target) {
+        dep.depend()
+      }
+      return val
+    },
+    set(newValue) {
+      console.log()
+      if (val === newValue) {
+        return
+      }
+      val = newValue
+      childOb = observe(newValue)
+      dep.notify()
+    }
+  })
+}

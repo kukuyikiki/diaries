@@ -64,6 +64,17 @@
     <div style="height: 100px;background-color: red;"></div>
     <div style="min-height: 10px;background-color: gray;"></div>
 </div>
+<script>
+  function aa() {
+    let a = 1
+    let b = 2
+    return function bb() {
+        console.log(a, b)
+    }
+  }
+
+  aa()
+</script>
 
 </body>
 </html>
