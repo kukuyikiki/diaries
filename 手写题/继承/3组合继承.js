@@ -1,18 +1,18 @@
 // 组合继承
 function Person(name) {
-  this.name = name
-  this.getName = function() {
-    return this.name
-  }
+  this.name = name;
+  this.getName = function () {
+    return this.name;
+  };
 }
-Person.prototype.age = 18
+Person.prototype.age = 18;
 
 function Student() {
-  Person.call(this, 'xixi')
+  Person.call(this, 'xixi');
 }
-Student.prototype = new Person()
+Student.prototype = new Person();
 
-let stu = new Student()
+let stu = new Student();
 
 // 组合继承：相当于构造继承和原型链继承的组合体。
 //          通过调用父类构造，继承父类的属性并保留传参的优点，然后通过将父类实例作为子类原型，实现函数复用

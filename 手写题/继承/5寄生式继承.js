@@ -1,30 +1,30 @@
 function Person(name) {
-  this.name = name
-  this.sum = function() {
-    return this.name
-  }
+  this.name = name;
+  this.sum = function () {
+    return this.name;
+  };
 }
-Person.prototype.age = 16
+Person.prototype.age = 16;
 
 function Content(obj) {
   function F() {}
-  F.prototype = obj
-  return new F()
+  F.prototype = obj;
+  return new F();
 }
 // 函数的主要作用是为构造函数新增属性和方法，以增强函数
 function Student(obj) {
-  let temp = Content(obj)
-  temp.name = 'xixixi'
-  return temp
+  let temp = Content(obj);
+  temp.name = 'xixixi';
+  return temp;
 }
 
-let per = new Person()
+let per = new Person();
 
-let stu = Student(per)
+let stu = new Student(per);
 
-console.log(stu.name)
-console.log(stu.age)
-console.log(stu instanceof Person)
+console.log(stu.name);
+console.log(stu.age);
+console.log(stu instanceof Person);
 
 // 核心：在原型式继承的基础上，增强对象，返回构造函数
 

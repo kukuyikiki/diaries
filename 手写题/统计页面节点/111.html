@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <span></span>
+      <span></span>
+      <span>111</span>
+      <div>
+        <div id="first">
+          222
+          <div>
+            <div>333</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function helper(e) {
+        // 减去window和document两个层
+        console.log('层数', e.path.length - 2);
+      }
+      //   防抖
+      function debounce(fn, delay) {
+        let timer = null; //借助闭包
+        return function () {
+          const context = this;
+          const args = [...arguments];
+          if (timer) {
+            return;
+          }
+          timer = setTimeout(() => {
+            fn.apply(context, args);
+            timer = null;
+          }, delay);
+        };
+      }
+      let myFunction = debounce(helper, 1000);
+
+      //   获取所有节点
+      let nodeCounts = document.getElementsByTagName('*').length;
+      console.log(
+        document.getElementsByTagName('*'),
+        'document.getElementsByTagName(' * ')'
+      );
+      console.log('所有节点数', nodeCounts);
+
+      //   监听事件
+      document
+        .getElementsByTagName('body')[0]
+        .addEventListener('DOMSubtreeModified', myFunction, false);
+      //   更改dom节点
+      setTimeout(() => {
+        let root = document.getElementById('first');
+        root.innerText = '22222';
+      }, 800);
+    </script>
+  </body>
+</html>
